@@ -53,7 +53,6 @@ export default function Main() {
     const [{ inputText, outputText, steps }, dispatcher] = useReducer(reducer, initialState);
 
 
-
     return <main>
         <div>
             <p className="prevent-select label">Input</p>
