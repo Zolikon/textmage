@@ -6,25 +6,49 @@ body {
 
 #root {
   height: 100%;
-  text-align: center;
+}
+
+#inner-body {
+  height: 100%;
   display: grid;
-  grid-template-rows: 20vh auto 5vh;
-
+  grid-template-areas: "header header header header header"
+                        ". . . . ."
+                        ". input steps output ."
+                        ". . . . ."
+                        "footer footer footer footer footer";
+  grid-template-rows: 10% 2% auto 2% 5%;
+  grid-template-columns: 2% 20% auto 20% 2%;
+  gap:10px;
 }
 
-main {
-  display: flex;
-  justify-content: space-evenly;
+header {
+  grid-area: header;
+  background-color: #0ab96a;
 }
 
-main div {
+footer {
+  grid-area: footer;
+  background-color: #0ab96a;
+}
+
+.container {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.step-holder {
-  width: 40vw;
+.input-container {
+  grid-area: input;
+}
+
+.step-container {
+  height: 100%;
+  grid-area: steps;
+}
+
+.output-container {
+  grid-area: output;
 }
 
 .custom-text-area {
@@ -33,27 +57,57 @@ main div {
   resize: none;
 }
 
+.step-container .title {
+  height: 4%;
+}
+
+.step-container .toggle-holder {
+  height: 10%;
+}
+
+.step-container .step-holder {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 7px;
+  width: 95%;
+  height: 70%;
+}
+
+.step-container .step-action-holder {
+  height: 10%;
+  display: flex;
+  gap: 20%;
+}
+
 .step {
-  margin: 10px;
   padding: 10px;
   background-color: rgb(73, 219, 219);
   border-radius: 20px;
-  width: 100%;
+  width: 95%;
 }
 
 .step:not(.disabled-step):hover {
-  box-shadow: 10px 10px #645757;
-  transform: translate(-10px, -10px);
+  box-shadow: 4px 4px #564949;
+  transform: translate(-4px, -4px);
   transition-duration: 200ms;
 }
 
 .step.disabled-step{
-  background-color: rgb(255, 115, 0);
+  background-color: rgb(196, 177, 177);
 }
 
 .label{
   font-family: "Signika Negative", sans-serif;
   font-weight: 600;
+  font-size: 80%;
+  margin: auto;
+  margin-left: 10px;
+}
+
+.disabled-step.label {
+  text-decoration: line-through;
 }
 
 .title {
@@ -65,38 +119,4 @@ main div {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
-}
-
-footer {
-  width: 100vw;
-  background-color: #0ab96a;
-}
-
-.step-section {
-  justify-content: space-between;
-}
-
-.step-section .title {
-  height: 10%;
-}
-
-.step-section .step-holder {
-  height: 80%;
-}
-
-.text-area-holder {
-  height: 100%;
-  justify-content: space-around;
-}
-
-.text-area-holder :first-child {
-  height: 5%;
-}
-
-.text-area-holder :nth-child(2) {
-  height: 10%;
-}
-
-.text-area-holder :nth-child(3) {
-  height: 70%;
 }
