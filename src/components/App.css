@@ -21,6 +21,27 @@ body {
   gap:10px;
 }
 
+@media screen and (max-width: 992px) {
+  #inner-body {
+    display: grid;
+    grid-template-areas: "header"
+                          "input"
+                          "steps"
+                          "output"
+                          "footer";
+    grid-template-rows: 100px 400px 800px 400px 50px;
+    grid-template-columns: 100%;
+    gap:10px;
+  }
+
+  .step {
+    height: 20%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+}
+
 header {
   grid-area: header;
   background-color: #0ab96a;
