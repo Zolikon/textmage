@@ -1,37 +1,37 @@
-
-
 body {
   height: 100vh;
 }
 
 #root {
   height: 100%;
+  --transformation_color: rgb(107, 212, 212);
+  --filter_color: rgb(130, 161, 219);
 }
 
 #inner-body {
   height: 100%;
   display: grid;
   grid-template-areas: "header header header header header"
-                        ". . . . ."
-                        ". input steps output ."
-                        ". . . . ."
-                        "footer footer footer footer footer";
-  grid-template-rows: 10% 2% auto 2% 5%;
+    ". . . . ."
+    ". input steps output ."
+    ". . . . ."
+    "footer footer footer footer footer";
+  grid-template-rows: 8% 2% auto 2% 5%;
   grid-template-columns: 2% 20% auto 20% 2%;
-  gap:10px;
+  gap: 10px;
 }
 
 @media screen and (max-width: 992px) {
   #inner-body {
     display: grid;
     grid-template-areas: "header"
-                          "input"
-                          "steps"
-                          "output"
-                          "footer";
+      "input"
+      "steps"
+      "output"
+      "footer";
     grid-template-rows: 100px 400px 800px 400px 50px;
     grid-template-columns: 100%;
-    gap:10px;
+    gap: 10px;
   }
 
   .step {
@@ -39,7 +39,6 @@ body {
     display: flex;
     flex-wrap: wrap;
   }
-
 }
 
 header {
@@ -93,20 +92,30 @@ footer {
   justify-content: flex-start;
   gap: 7px;
   width: 95%;
-  height: 70%;
+  height: 80%;
 }
 
 .step-container .step-action-holder {
+  width: 100%;
   height: 10%;
   display: flex;
-  gap: 20%;
+  justify-content: space-between;
+  gap: 5%;
 }
 
 .step {
   padding: 10px;
-  background-color: rgb(73, 219, 219);
   border-radius: 20px;
   width: 95%;
+}
+
+.transformation-step {
+  background-color: var(--transformation_color);
+}
+
+
+.filter-step {
+  background-color:  var(--filter_color);
 }
 
 .step:not(.disabled-step):hover {
@@ -115,11 +124,11 @@ footer {
   transition-duration: 200ms;
 }
 
-.step.disabled-step{
+.step.disabled-step {
   background-color: rgb(196, 177, 177);
 }
 
-.label{
+.label {
   font-family: "Signika Negative", sans-serif;
   font-weight: 600;
   font-size: 80%;
@@ -137,7 +146,10 @@ footer {
 }
 
 .prevent-select {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+  -webkit-user-select: none;
+  /* Safari */
+  -ms-user-select: none;
+  /* IE 10 and IE 11 */
+  user-select: none;
+  /* Standard syntax */
 }
