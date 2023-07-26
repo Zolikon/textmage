@@ -8,6 +8,8 @@ import { ArrowDownward } from "@mui/icons-material";
 
 function translateTypeToClass(type) {
     switch(type) {
+        case "json_transformation":
+            return "json-transformation-step"
         case "transformation":
             return "transformation-step"
         case "filter":

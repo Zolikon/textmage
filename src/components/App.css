@@ -5,6 +5,7 @@ body {
 #root {
   height: 100%;
   --transformation_color: rgb(107, 212, 212);
+  --json_transformation_color: rgb(219, 151, 130);
   --filter_color: rgb(130, 161, 219);
 }
 
@@ -111,6 +112,10 @@ footer {
 
 .transformation-step {
   background-color: var(--transformation_color);
+}
+
+.json-transformation-step {
+  background-color: var(--json_transformation_color);
 }
 
 
