@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 import TextField from '@mui/material/TextField';
 import { MenuItem, Select, Switch } from "@mui/material";
+import { Help } from "../Help";
 
 const TEXT_ALIGNMENT = {
     sx: {
@@ -149,6 +150,7 @@ export function JsonFilterStep({ setTransformer, disabled, setTitle }) {
             size="small" value={fieldName} onChange={(event) => setFieldName(event.target.value)} disabled={disabled} />
         <TextField type="text" label="Text" InputProps={TEXT_ALIGNMENT} style={{ width: "20%" }}
             size="small" value={value} onChange={(event) => setValue(event.target.value)} disabled={disabled} />
+        <Help><p>text to display</p></Help>
     </>
 
 }

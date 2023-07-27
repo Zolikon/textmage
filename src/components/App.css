@@ -1,5 +1,6 @@
 body {
   height: 100vh;
+  min-width: 600px;
 }
 
 #root {
@@ -120,7 +121,7 @@ footer {
 
 
 .filter-step {
-  background-color:  var(--filter_color);
+  background-color: var(--filter_color);
 }
 
 .step:not(.disabled-step):hover {

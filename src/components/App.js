@@ -1,17 +1,12 @@
+import { useReducer } from "react";
+import Switch from '@mui/material/Switch';
 import './App.css';
 import Header from './Header';
 import Footer from './Footer';
 import Step from './Step'
-import { ToUpperCaseStep, ToLowerCaseStep } from "./transformation-steps/NoInputSteps"
-
-import { useReducer } from "react";
-import { Dropdown } from "react-bootstrap";
-import Button from '@mui/material/Button';
-import Switch from '@mui/material/Switch';
-import { AppendStep, InsertStep, REGEX_REPLACE_TYPE, ReplaceStep, STRING_REPLACE_TYPE, SubstringStep } from './transformation-steps/ReplaceSteps';
-import { GeneralFilterStep, JsonFilterStep } from './filter-steps/FilterStep';
-import { ValidJsonStep } from './filter-steps/ValidJsonStep';
-import { CsvToJsonLinesStep, JsonFieldConverterStep, JsonFieldExtractorStep } from './transformation-steps/JsonSteps';
+import { Input } from './Input';
+import { Output } from './Output';
+import { StepActions } from './StepActions';
 
 const initialState = {
     inputText: "",
@@ -107,6 +102,8 @@ function reducer(state, { type, payload }) {
 
 }
 
+const MAX_NUMBER_OF_STEPS = 5;
+
 function App() {
     const [{ inputText, outputText, steps, processLineByLine }, dispatcher] = useReducer(reducer, initialState);
 
@@ -116,13 +113,7 @@ function App() {
         <div id="inner-body">
             <Header>
             </Header>
-            <div className="input-container container">
-                <p className="prevent-select title">Input</p>
-                <div>
-                    <Button onClick={() => dispatcher({ type: "clearInput" })}>Reset</Button>
-                </div>
-                <textarea className="custom-text-area" value={inputText} onChange={(event) => dispatcher({ type: "newInputText", payload: event.target.value })} />
-            </div>
+            <Input dispatcher={dispatcher} inputText={inputText} />
             <div className="step-container container">
                 <div className="prevent-select title">Steps</div>
 
@@ -137,55 +128,9 @@ function App() {
                 <div className="step-holder">
                     {steps.map((step) => <Step key={step.id} id={step.id} dispatcher={dispatcher} title={step.title} type={step.type} >{step.form}</Step>)}
                 </div>
-                <div className="step-action-holder">
-                    <Dropdown style={{ width: "30%", alignSelf: "center" }}>
-                        <Dropdown.Toggle variant="success" disabled={steps.length >= 5} style={{backgroundColor: "var(--filter_color)", color: "black"}}>
-                            Add filter
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <GeneralFilterStep />, type: "filter" } })}>Text Filter</Dropdown.Item>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <JsonFilterStep />, type: "filter" } })}>Json filter</Dropdown.Item>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <ValidJsonStep />, type: "filter" } })}>Valid json</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Dropdown style={{ width: "25%", alignSelf: "center" }}>
-                        <Dropdown.Toggle variant="success" disabled={steps.length >= 5} style={{backgroundColor: "var(--transformation_color)", color: "black"}}>
-                            Add text transformation
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <ToUpperCaseStep />, type: "transformation" } })}>To Upper case</Dropdown.Item>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <ToLowerCaseStep />, type: "transformation" } })}>To Lower case</Dropdown.Item>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <ReplaceStep type={STRING_REPLACE_TYPE} />, type: "transformation" } })}>Replace</Dropdown.Item>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <ReplaceStep type={REGEX_REPLACE_TYPE} />, type: "transformation" } })}>Regular expression</Dropdown.Item>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <SubstringStep />, type: "transformation" } })}>Substring</Dropdown.Item>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <AppendStep />, type: "transformation" } })}>Append</Dropdown.Item>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <InsertStep />, type: "transformation" } })}>Insert</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Dropdown style={{ width: "25%", alignSelf: "center" }}>
-                        <Dropdown.Toggle variant="success" disabled={steps.length >= 5} style={{backgroundColor: "var(--json_transformation_color)", color: "black"}}>
-                            Add json transformation
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <CsvToJsonLinesStep />, type: "json_transformation" } })}>Csv to Json line</Dropdown.Item>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <JsonFieldConverterStep />, type: "json_transformation" } })}>Json field converter</Dropdown.Item>
-                            <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <JsonFieldExtractorStep />, type: "json_transformation" } })}>Json field extractor</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Button style={{ alignSelf: "center" }} size='large' variant="contained" disabled={steps.length === 0} onClick={() => dispatcher({ type: "executeTransformation" })}>Execute</Button>
-                </div>
+                <StepActions dispatcher={dispatcher} isMaxStepsReached={steps.length >= MAX_NUMBER_OF_STEPS} />
             </div>
-            <div className="output-container container">
-                <p className="prevent-select title">Output</p>
-                <div style={{ display: "block" }}>
-                    <Button onClick={() => navigator.clipboard.writeText(outputText)}>Copy</Button>
-                    <Button onClick={() => dispatcher({ type: "moveOutputToInput", payload: outputText })}>Move to input</Button>
-                </div>
-                <textarea className="custom-text-area" value={outputText} readOnly />
-            </div>
+            <Output dispatcher={dispatcher} outputText={outputText} />
             <Footer />
         </div>
     </>
