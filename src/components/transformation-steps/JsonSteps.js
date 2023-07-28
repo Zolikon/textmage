@@ -117,7 +117,7 @@ export function JsonFieldConverterStep({ setTransformer, disabled, setTitle,setH
             <MenuItem value={"array"}>Array</MenuItem>
             <MenuItem value={"nested_object"}>Nested Object</MenuItem>
         </Select>
-        <TextField type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "30%" }}
+        <TextField type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
             size="small" value={field} onChange={(event) => setField(event.target.value)} disabled={disabled} />
     </>
 }
@@ -150,7 +150,7 @@ export function JsonFieldExtractorStep({ setTransformer, disabled, setTitle, set
     }, [field, setTitle, setTransformer, setHelp])
 
     return <>
-        <TextField type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "30%" }}
+        <TextField type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
             size="small" value={field} onChange={(event) => setField(event.target.value)} disabled={disabled} />
     </>
 }

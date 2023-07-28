@@ -67,6 +67,7 @@ footer {
 .step-container {
   height: 100%;
   grid-area: steps;
+  gap: 10px;
 }
 
 .output-container {
@@ -95,6 +96,7 @@ footer {
   gap: 7px;
   width: 95%;
   height: 80%;
+  overflow-y: auto;
 }
 
 .step-container .step-action-holder {
@@ -106,9 +108,16 @@ footer {
 }
 
 .step {
-  padding: 10px;
+  padding: 15px;
   border-radius: 20px;
+  height: 150px;
   width: 95%;
+  display: grid;
+  grid-template-areas: "title actions"
+    ". ."
+    "inputs inputs";
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 20% 15% auto;
 }
 
 .transformation-step {
@@ -118,7 +127,6 @@ footer {
 .json-transformation-step {
   background-color: var(--json_transformation_color);
 }
-
 
 .filter-step {
   background-color: var(--filter_color);
@@ -134,16 +142,53 @@ footer {
   background-color: rgb(196, 177, 177);
 }
 
-.label {
+.step-title {
+  grid-area: title;
   font-family: "Signika Negative", sans-serif;
   font-weight: 600;
-  font-size: 80%;
+  font-size: 15px;
   margin: auto;
   margin-left: 10px;
 }
 
-.disabled-step.label {
+.disabled-step.step-title {
   text-decoration: line-through;
+}
+
+.step-actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.step-inputs {
+  grid-area: inputs;
+  display: grid;
+  grid-template-areas: "first second"
+    "third fourth";
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+}
+
+.input-action:first-child {
+  grid-area: first;
+  place-self: center;
+}
+
+.input-action:nth-child(2) {
+  grid-area: second;
+  place-self: center;
+}
+
+.input-action:nth-child(3) {
+  grid-area: third;
+  place-self: center;
+}
+
+.input-action:nth-child(4) {
+  grid-area: fourth;
+  place-self: center;
 }
 
 .title {

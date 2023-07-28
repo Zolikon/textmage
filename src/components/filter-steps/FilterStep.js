@@ -71,7 +71,7 @@ export function GeneralFilterStep({ setTransformer, disabled, setTitle, setHelp 
     }, [value, trueOrFalse, filterType, setTitle, setTransformer, setHelp])
 
     return <>
-        <div style={{ display: "flex", flexWrap: "nowrap", height: "100%", alignItems: "center"}} className="toggle-holder">
+        <div style={{ display: "flex", flexWrap: "nowrap", height: "100%", alignItems: "center"}} className="toggle-holder input-action">
             <span>Positive filter</span>
             <Switch checked={trueOrFalse}
                 onChange={() => setTrueOrFalse((current) => !current)}
@@ -84,6 +84,7 @@ export function GeneralFilterStep({ setTransformer, disabled, setTitle, setHelp 
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
             label="Type"
+            className="input-action"
         >
             <MenuItem value={"equals"}>Equals</MenuItem>
             <MenuItem value={"contains"}>Contains</MenuItem>
@@ -91,7 +92,7 @@ export function GeneralFilterStep({ setTransformer, disabled, setTitle, setHelp 
             <MenuItem value={"starts_with"}>Starts with</MenuItem>
             <MenuItem value={"ends_with"}>Ends with</MenuItem>
         </Select>
-        <TextField type="text" label="Text" InputProps={TEXT_ALIGNMENT} style={{ width: "30%" }}
+        <TextField type="text" label="Text" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }} className="input-action"
             size="small" value={value} onChange={(event) => setValue(event.target.value)} disabled={disabled} />
     </>
 
@@ -146,7 +147,7 @@ export function JsonFilterStep({ setTransformer, disabled, setTitle, setHelp }) 
     }, [value, trueOrFalse, filterType, fieldName, setTitle, setTransformer, setHelp])
 
     return <>
-        <div style={{ display: "flex", flexWrap: "nowrap", height: "100%", alignItems: "center"}} className="toggle-holder">
+        <div style={{ display: "flex", flexWrap: "nowrap", height: "100%", alignItems: "center"}} className="toggle-holder input-action">
             <span>Positive filter</span>
             <Switch checked={trueOrFalse}
                 onChange={() => setTrueOrFalse((current) => !current)}
@@ -159,14 +160,15 @@ export function JsonFilterStep({ setTransformer, disabled, setTitle, setHelp }) 
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
             label="Type"
+            className="input-action"
         >
             <MenuItem value={"equals"}>Equals</MenuItem>
             <MenuItem value={"contains"}>Contains</MenuItem>
             <MenuItem value={"matches"}>Matches</MenuItem>
         </Select>
-        <TextField type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "20%" }}
+        <TextField className="input-action" type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
             size="small" value={fieldName} onChange={(event) => setFieldName(event.target.value)} disabled={disabled} />
-        <TextField type="text" label="Text" InputProps={TEXT_ALIGNMENT} style={{ width: "20%" }}
+        <TextField className="input-action" type="text" label="Text" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
             size="small" value={value} onChange={(event) => setValue(event.target.value)} disabled={disabled} />
     </>
 

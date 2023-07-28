@@ -46,20 +46,15 @@ export default function Step({ type, dispatcher, id, children }) {
 
     const classNames = [translateTypeToClass(type), disabled ? "step disabled-step prevent-select" : "step prevent-select"].join(" ")
 
-    return <div className={classNames} style={{ display: "flex", flexDirection: "row", gap: "5px", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignContent: "center", flexDirection: "row", gap: "5px" }}>
+    return <div className={classNames}>
+        <div className={disabled ? "prevent-select step-title disabled-step" : "prevent-select step-title"} style={{ width: "40%" }}>{title}</div>
+        <div className="step-actions">
             <IconButton onClick={() => dispatcher({ type: "moveStepUp", payload: id })} aria-label="moveup">
                 <ArrowUpwardIcon />
             </IconButton>
             <IconButton onClick={() => dispatcher({ type: "moveStepDown", payload: id })} aria-label="movedown">
                 <ArrowDownward />
             </IconButton>
-            <div className={disabled ? "prevent-select label disabled-step" : "prevent-select label"} style={{ width: "40%" }}>{title}</div>
-        </div>
-        <div style={{ display: "flex", flexDirection: "row", gap: "5px", flexWrap: "wrap", alignItems: "center" }}>
-            {modifiedChildren}
-        </div>
-        <div style={{ display: "flex", flexDirection: "row", gap: "5px", alignItems: "center" }}>
             {help && <Help>
                 {help}
             </Help>}
@@ -68,7 +63,10 @@ export default function Step({ type, dispatcher, id, children }) {
             </IconButton>
             <IconButton onClick={() => dispatcher({ type: 'closeStep', payload: id })} aria-label="delete">
                 <DeleteIcon />
-            </IconButton>
+            </IconButton>  
+        </div>
+        <div className="step-inputs">
+            {modifiedChildren}
         </div>
     </div>
 
