@@ -46,9 +46,9 @@ export function CsvToJsonLinesStep({ setTransformer, disabled, setTitle, setHelp
     }, [header, separator, setTitle, setTransformer, transformer, setHelp])
 
     return <>
-        <TextField type="text" label="Header" InputProps={TEXT_ALIGNMENT} style={{ width: "40%" }}
+        <TextField className="input-action" type="text" label="Header" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
             size="small" value={header} onChange={(event) => setHeader(event.target.value)} disabled={disabled} />
-        <TextField type="text" label="Separator" InputProps={TEXT_ALIGNMENT} style={{ width: "20%" }}
+        <TextField className="input-action" type="text" label="Separator" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
             size="small" value={separator} onChange={(event) => setSeparator(event.target.value)} disabled={disabled} />
     </>
 }
@@ -107,6 +107,7 @@ export function JsonFieldConverterStep({ setTransformer, disabled, setTitle,setH
 
     return <>
         <Select
+            className="input-action" 
             sx={{ m: 1, minWidth: 120 }}
             variant="standard"
             value={convertsionType}
@@ -117,7 +118,7 @@ export function JsonFieldConverterStep({ setTransformer, disabled, setTitle,setH
             <MenuItem value={"array"}>Array</MenuItem>
             <MenuItem value={"nested_object"}>Nested Object</MenuItem>
         </Select>
-        <TextField type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
+        <TextField className="input-action" type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
             size="small" value={field} onChange={(event) => setField(event.target.value)} disabled={disabled} />
     </>
 }
@@ -150,7 +151,7 @@ export function JsonFieldExtractorStep({ setTransformer, disabled, setTitle, set
     }, [field, setTitle, setTransformer, setHelp])
 
     return <>
-        <TextField type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
+        <TextField className="input-action" type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
             size="small" value={field} onChange={(event) => setField(event.target.value)} disabled={disabled} />
     </>
 }

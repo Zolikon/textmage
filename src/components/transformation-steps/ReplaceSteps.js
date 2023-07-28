@@ -43,7 +43,7 @@ export function ReplaceStep({ type, setTransformer, disabled, setTitle, setHelp 
     return <>
         <TextField className="input-action" type="text" label={type === STRING_REPLACE_TYPE ? "From" : "Regex"} InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
             size="small" value={fromValue} onChange={(event) => setFromValue(event.target.value)} disabled={disabled} />
-        <TextField className="input-action" type="text" label="To" InputProps={TEXT_ALIGNMENT} style={{ width: "150ox" }}
+        <TextField className="input-action" type="text" label="To" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
             size="small" value={toValue} onChange={(event) => setToValue(event.target.value)} disabled={disabled} />
     </>
 
