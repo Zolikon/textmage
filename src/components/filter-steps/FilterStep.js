@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 
 import TextField from '@mui/material/TextField';
 import { MenuItem, Select, Switch } from "@mui/material";
-import { Help } from "../Help";
 
 const TEXT_ALIGNMENT = {
     sx: {
@@ -32,7 +31,7 @@ function getFilterFunction(type) {
     }
 }
 
-export function GeneralFilterStep({ setTransformer, disabled, setTitle }) {
+export function GeneralFilterStep({ setTransformer, disabled, setTitle, setHelp }) {
 
     const [value, setValue] = useState('')
     const [trueOrFalse, setTrueOrFalse] = useState(true)
@@ -40,6 +39,16 @@ export function GeneralFilterStep({ setTransformer, disabled, setTitle }) {
 
     useEffect(() => {
         setTitle("Text filter")
+        setHelp(
+        <>
+            <h2>Filters text by different filters</h2>
+            <div>Examples:</div>
+            <div>'abc' contains 'ab' ➡ input is kept</div>
+            <div>'abc' matches '.*[0-9].*' ➡ input is dropped</div>
+            <br/>
+            <div>If 'Positive filter' is disabled then the result is negated (e.g. not equals)</div>
+        </>
+        )
         setTransformer(() => (input) => {
             const filterFunction = getFilterFunction(filterType)
             if (trueOrFalse) {
@@ -59,7 +68,7 @@ export function GeneralFilterStep({ setTransformer, disabled, setTitle }) {
             }
 
         })
-    }, [value, trueOrFalse, filterType, setTitle, setTransformer])
+    }, [value, trueOrFalse, filterType, setTitle, setTransformer, setHelp])
 
     return <>
         <div style={{ display: "flex", flexWrap: "nowrap", height: "100%", alignItems: "center"}} className="toggle-holder">
@@ -88,7 +97,7 @@ export function GeneralFilterStep({ setTransformer, disabled, setTitle }) {
 
 }
 
-export function JsonFilterStep({ setTransformer, disabled, setTitle }) {
+export function JsonFilterStep({ setTransformer, disabled, setTitle, setHelp }) {
 
     const [fieldName, setFieldName] = useState('')
     const [value, setValue] = useState('')
@@ -97,6 +106,15 @@ export function JsonFilterStep({ setTransformer, disabled, setTitle }) {
 
     useEffect(() => {
         setTitle("Json filter")
+        setHelp(<>
+            <h2>Filters input as json by different filters</h2>
+            <div>Input is assumed is json, if not the input is dropped</div>
+            <div>Examples:</div>
+            <div>Input <code>{"{\"a\":\"abc\"}, \"b\":1}"}</code> with field 'a' contains 'ab' ➡ input is kept</div>
+            <div>Input <code>{"{\"a\":\"abc\"}, \"b\":1}"}</code> with field 'b' equals 3 ➡ input is dropped</div>
+            <br/>
+            <div>If 'Positive filter' is disabled then the result is negated (e.g. not equals)</div>
+        </>)
         setTransformer(() => (input) => {
             
             let fieldValue = null;
@@ -125,7 +143,7 @@ export function JsonFilterStep({ setTransformer, disabled, setTitle }) {
             }
 
         })
-    }, [value, trueOrFalse, filterType, fieldName, setTitle, setTransformer])
+    }, [value, trueOrFalse, filterType, fieldName, setTitle, setTransformer, setHelp])
 
     return <>
         <div style={{ display: "flex", flexWrap: "nowrap", height: "100%", alignItems: "center"}} className="toggle-holder">
@@ -150,7 +168,6 @@ export function JsonFilterStep({ setTransformer, disabled, setTitle }) {
             size="small" value={fieldName} onChange={(event) => setFieldName(event.target.value)} disabled={disabled} />
         <TextField type="text" label="Text" InputProps={TEXT_ALIGNMENT} style={{ width: "20%" }}
             size="small" value={value} onChange={(event) => setValue(event.target.value)} disabled={disabled} />
-        <Help><p>text to display</p></Help>
     </>
 
 }

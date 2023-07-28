@@ -1,35 +1,22 @@
-import { useReducer } from "react"
 
-
-const INITIAL_STATE = {
-    isHover: false,
-    top: 0,
-    left: 0
-}
-
-function reducer(state, { type, payload }) {
-    switch (type) {
-        case "mouseEnter":
-        case "mouseMove":
-            return { ...state, isHover: true, top: payload.y + 5, left: payload.x + 5 }
-        case "mouseLeave":
-            return { ...state, isHover: false }
-        default:
-            throw new Error("not supported operation")
-    }
-}
+import { useRef } from "react"
+import IconButton from '@mui/material/IconButton';
+import HelpIcon from '@mui/icons-material/Help';
+import Button from '@mui/material/Button';
 
 export function Help({ children }) {
-    const [{ isHover, top, left }, dispatcher] = useReducer(reducer, INITIAL_STATE)
+
+    const dialogRef = useRef(null)
 
     return <div>
-        <div
-            onMouseEnter={(e) => dispatcher({ type: "mouseEnter", payload: { x: e.pageX, y: e.pageY } })}
-            onMouseLeave={() => dispatcher({ type: "mouseLeave" })}
-            onMouseMove={(e) => dispatcher({ type: "mouseMove", payload: { x: e.pageX, y: e.pageY } })}
-        >❓</div>
-        {isHover && <div style={{ top: top + "px", left: left + "px", position: "fixed" }}>
+        <IconButton onClick={() => dialogRef.current.showModal()} aria-label="help">
+            <HelpIcon />
+        </IconButton>
+        <dialog ref={dialogRef} style={{ backgroundColor: "black", color: "white" }}>
             {children}
-        </div>}
+            <br />
+            <Button size='small' variant="contained" onClick={() => dialogRef.current.close()}>Helpful, thank you</Button>
+
+        </dialog>
     </div>
 }

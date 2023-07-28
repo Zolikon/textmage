@@ -5,9 +5,10 @@ import BlockIcon from '@mui/icons-material/Block';
 import CheckIcon from '@mui/icons-material/Check';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { ArrowDownward } from "@mui/icons-material";
+import { Help } from "./Help";
 
 function translateTypeToClass(type) {
-    switch(type) {
+    switch (type) {
         case "json_transformation":
             return "json-transformation-step"
         case "transformation":
@@ -24,9 +25,10 @@ export default function Step({ type, dispatcher, id, children }) {
     const [disabled, setDisabled] = useState(false)
     const [title, setTitle] = useState('')
     const [transformer, setTransformer] = useState((input) => { })
+    const [help, setHelp] = useState(null)
 
     const modifiedChildren = React.Children.map(children, (child) => {
-        return React.cloneElement(child, { setTransformer: setTransformer, disabled: disabled, setTitle: setTitle });
+        return React.cloneElement(child, { setTransformer: setTransformer, disabled: disabled, setTitle: setTitle, setHelp: setHelp });
     });
 
     useEffect(() => {
@@ -35,16 +37,17 @@ export default function Step({ type, dispatcher, id, children }) {
             payload: {
                 id: id,
                 title: title,
+                help: help,
                 disabled: disabled,
                 transformer: transformer
             }
         })
-    }, [dispatcher, id, disabled, transformer, title])
+    }, [dispatcher, id, disabled, transformer, title, help])
 
     const classNames = [translateTypeToClass(type), disabled ? "step disabled-step prevent-select" : "step prevent-select"].join(" ")
 
     return <div className={classNames} style={{ display: "flex", flexDirection: "row", gap: "5px", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignContent:"center" ,flexDirection: "row", gap: "5px" }}>
+        <div style={{ display: "flex", alignContent: "center", flexDirection: "row", gap: "5px" }}>
             <IconButton onClick={() => dispatcher({ type: "moveStepUp", payload: id })} aria-label="moveup">
                 <ArrowUpwardIcon />
             </IconButton>
@@ -53,10 +56,13 @@ export default function Step({ type, dispatcher, id, children }) {
             </IconButton>
             <div className={disabled ? "prevent-select label disabled-step" : "prevent-select label"} style={{ width: "40%" }}>{title}</div>
         </div>
-        <div style={{ display: "flex", flexDirection: "row", gap: "5px", flexWrap:"wrap" }}>
+        <div style={{ display: "flex", flexDirection: "row", gap: "5px", flexWrap: "wrap", alignItems: "center" }}>
             {modifiedChildren}
         </div>
-        <div style={{ display: "flex", flexDirection: "row", gap: "5px" }}>
+        <div style={{ display: "flex", flexDirection: "row", gap: "5px", alignItems: "center" }}>
+            {help && <Help>
+                {help}
+            </Help>}
             <IconButton onClick={() => setDisabled((disabledStatus) => !disabledStatus)} aria-label="disable">
                 {disabled ? <CheckIcon /> : <BlockIcon />}
             </IconButton>

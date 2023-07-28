@@ -11,7 +11,7 @@ const TEXT_ALIGNMENT = {
     }
 }
 
-export function CsvToJsonLinesStep({ setTransformer, disabled, setTitle }) {
+export function CsvToJsonLinesStep({ setTransformer, disabled, setTitle, setHelp }) {
     const [header, setHeader] = useState('')
     const [separator, setSeparator] = useState('')
 
@@ -30,13 +30,25 @@ export function CsvToJsonLinesStep({ setTransformer, disabled, setTitle }) {
 
     useEffect(() => {
         setTitle("Csv to json lines")
+        setHelp(<>
+            <h2>CSV input to JSON output</h2>
+            <div>Converts comma separated values to json output</div>
+            <div><strong>Configuration:</strong></div>
+            <div>Header is the column headers separated by the configured separator</div>
+            <div>Separator is what separates values in the input</div>
+            <br />
+            <div><strong>Example:</strong></div>
+            <div>Input <code>1;hello world;["a","b"]</code>, header <code>a;b;c</code>, separator: ','</div>
+            <div>Output will be <code>{"{\"a\":\"1\", \"b\":\"hello world\", \"c\":\"[\\\"a\\\", \\\"b\\\"]\"}"}</code></div>
+            <div>Note: every field will be string, but they can be extracted to other format with the 'Json field converter' step</div>
+        </>)
         setTransformer(() => transformer)
-    }, [header, separator, setTitle, setTransformer, transformer])
+    }, [header, separator, setTitle, setTransformer, transformer, setHelp])
 
     return <>
         <TextField type="text" label="Header" InputProps={TEXT_ALIGNMENT} style={{ width: "40%" }}
             size="small" value={header} onChange={(event) => setHeader(event.target.value)} disabled={disabled} />
-        <TextField type="text" label="Separator" InputProps={TEXT_ALIGNMENT} style={{ width: "10%" }}
+        <TextField type="text" label="Separator" InputProps={TEXT_ALIGNMENT} style={{ width: "20%" }}
             size="small" value={separator} onChange={(event) => setSeparator(event.target.value)} disabled={disabled} />
     </>
 }
@@ -53,7 +65,7 @@ function getJsonFieldConverter(type) {
     }
 }
 
-export function JsonFieldConverterStep({ setTransformer, disabled, setTitle }) {
+export function JsonFieldConverterStep({ setTransformer, disabled, setTitle,setHelp }) {
     const [field, setField] = useState('')
     const [convertsionType, setConvertsionType] = useState('number')
 
@@ -75,8 +87,23 @@ export function JsonFieldConverterStep({ setTransformer, disabled, setTitle }) {
 
     useEffect(() => {
         setTitle("Json field converter")
+        setHelp(<>
+            <h2>Json field converter</h2>
+            <div>Assumes input is valid json, of not input will be dropped</div>
+            <div><strong>Configuration:</strong></div>
+            <div>Type is what you want the field to be converted</div>
+            <div>Field is which field to convert</div>
+            <br />
+            <div><strong>Example:</strong></div>
+            <div>Input <code>{"{\"a\":\"1\", \"b\":\"hello world\", \"c\":\"[\\\"a\\\", \\\"b\\\"]\"}"}</code>, type 'Number', field: 'a'</div>
+            <div>Output will be <code>{"{\"a\":1, \"b\":\"hello world\", \"c\":\"[\\\"a\\\", \\\"b\\\"]\"}"}</code></div>
+            <div>Follow up with the a next similar step where type 'Array', field: 'c' </div>
+            <div>Output will be <code>{"{\"a\":1, \"b\":\"hello world\", \"c\":[\"a\",\"b\"]}"}</code></div>
+            <br />
+            <div>Note: if the given field does not exist or cannot be transformed to given type the input will be dropped</div>
+        </>)
         setTransformer(() => transformer)
-    }, [field, convertsionType, setTitle, setTransformer, transformer])
+    }, [field, convertsionType, setTitle, setTransformer, transformer, setHelp])
 
     return <>
         <Select
@@ -95,12 +122,24 @@ export function JsonFieldConverterStep({ setTransformer, disabled, setTitle }) {
     </>
 }
 
-export function JsonFieldExtractorStep({ setTransformer, disabled, setTitle }) {
+export function JsonFieldExtractorStep({ setTransformer, disabled, setTitle, setHelp }) {
     const [field, setField] = useState('')
 
     useEffect(() => {
         setTitle("Json field extractor")
-        setTransformer(() => (input)=>{
+        setHelp(<>
+            <h2>Json field extractor</h2>
+            <div>Assumes input is valid json, of not input will be dropped</div>
+            <div><strong>Configuration:</strong></div>
+            <div>Field is which to be extracted</div>
+            <br />
+            <div><strong>Example:</strong></div>
+            <div>Input <code>{"{\"a\":1, \"b\":\"hello world\", \"c\":[\"a\",\"b\"]}"}</code>, field: 'c'</div>
+            <div>Output will be <code>["a","b"]</code></div>
+            <br />
+            <div>Note: if the given field does not exist the input will be dropped</div>
+        </>)
+        setTransformer(() => (input) => {
             try {
                 const json = JSON.parse(input);
                 return JSON.stringify(json[field])
@@ -108,7 +147,7 @@ export function JsonFieldExtractorStep({ setTransformer, disabled, setTitle }) {
                 return null;
             }
         })
-    }, [field, setTitle, setTransformer])
+    }, [field, setTitle, setTransformer, setHelp])
 
     return <>
         <TextField type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "30%" }}
