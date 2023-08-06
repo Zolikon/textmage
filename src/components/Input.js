@@ -1,19 +1,19 @@
 import Button from '@mui/material/Button';
 import { useRef } from 'react';
+import { useSteps } from './StepContext';
 
-export function Input({ dispatcher, inputText }) {
+export function Input() {
 
-    const textAreaRef = useRef(null);
+    const {inputText, updateInputText} = useSteps()
 
     return <div className="input-container container">
         <p className="prevent-select title">Input</p>
         <div>
             <Button onClick={() => {
-                dispatcher({ type: "clearInput" });
-                textAreaRef.current.value = '';
+                updateInputText('')
             }}>Reset</Button>
         </div>
-        <textarea ref={textAreaRef} className="custom-text-area" value={inputText} onChange={(event) => dispatcher({ type: "newInputText", payload: event.target.value })} />
+        <textarea value={inputText} onChange={(e)=>updateInputText(e.target.value)} className="custom-text-area"/>
     </div>
 
 }

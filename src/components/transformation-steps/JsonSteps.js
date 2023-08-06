@@ -155,3 +155,38 @@ export function JsonFieldExtractorStep({ setTransformer, disabled, setTitle, set
             size="small" value={field} onChange={(event) => setField(event.target.value)} disabled={disabled} />
     </>
 }
+
+
+export function JsonFieldRemoverStep({ setTransformer, disabled, setTitle, setHelp }) {
+    const [field, setField] = useState('')
+
+    useEffect(() => {
+        setTitle("Json field remover")
+        setHelp(<>
+            <h2>Json field remover</h2>
+            <div>Assumes input is valid json, of not input will be dropped</div>
+            <div><strong>Configuration:</strong></div>
+            <div>Field is which to be removed</div>
+            <br />
+            <div><strong>Example:</strong></div>
+            <div>Input <code>{"{\"a\":1, \"b\":\"hello world\"}"}</code>, field: 'b'</div>
+            <div>Output will be <code>{"{\"a\":1}"}</code></div>
+            <br />
+            <div>Note: if the given field does not exist the input will be dropped</div>
+        </>)
+        setTransformer(() => (input) => {
+            try {
+                const json = JSON.parse(input);
+                delete json[field]
+                return JSON.stringify(json)
+            } catch {
+                return null;
+            }
+        })
+    }, [field, setTitle, setTransformer, setHelp])
+
+    return <>
+        <TextField className="input-action" type="text" label="Field" InputProps={TEXT_ALIGNMENT} style={{ width: "150px" }}
+            size="small" value={field} onChange={(event) => setField(event.target.value)} disabled={disabled} />
+    </>
+}

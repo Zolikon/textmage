@@ -2,10 +2,11 @@ import { AppendStep, InsertStep, REGEX_REPLACE_TYPE, ReplaceStep, STRING_REPLACE
 import { GeneralFilterStep, JsonFilterStep } from './filter-steps/FilterStep';
 import { ValidJsonStep } from './filter-steps/ValidJsonStep';
 import { ToUpperCaseStep, ToLowerCaseStep } from "./transformation-steps/NoInputSteps"
-import { CsvToJsonLinesStep, JsonFieldConverterStep, JsonFieldExtractorStep } from './transformation-steps/JsonSteps';
+import { CsvToJsonLinesStep, JsonFieldConverterStep, JsonFieldExtractorStep, JsonFieldRemoverStep } from './transformation-steps/JsonSteps';
 import { Dropdown } from "react-bootstrap";
 import Button from '@mui/material/Button';
 import { useMemo, useState } from 'react';
+import { useSteps } from './StepContext';
 
 
 const BASE_BUTTON_STYLE = {
@@ -15,7 +16,9 @@ const BASE_BUTTON_STYLE = {
 }
 
 
-export function StepActions({ dispatcher, isMaxStepsReached }) {
+export function StepActions() {
+
+    const {isMaxStepsReached, addNewStep, executeTranformation} = useSteps()
 
     const [selectedTypeName, setSelectedTypeName] = useState('')
 
@@ -25,35 +28,36 @@ export function StepActions({ dispatcher, isMaxStepsReached }) {
                 "name": "Filter",
                 "color": "filter_color",
                 "form": <>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <GeneralFilterStep />, type: "filter" } })}>Text Filter</Dropdown.Item>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <JsonFilterStep />, type: "filter" } })}>Json filter</Dropdown.Item>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <ValidJsonStep />, type: "filter" } })}>Valid json</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<GeneralFilterStep />, "filter" )}>Text Filter</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<JsonFilterStep />, "filter" )}>Json filter</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<ValidJsonStep />, "filter" )}>Valid json</Dropdown.Item>
                 </>
             },
             "text_transformation": {
                 "name": "Text transformation",
                 "color": "transformation_color",
                 "form": <>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <ToUpperCaseStep />, type: "transformation" } })}>To Upper case</Dropdown.Item>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <ToLowerCaseStep />, type: "transformation" } })}>To Lower case</Dropdown.Item>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <ReplaceStep type={STRING_REPLACE_TYPE} />, type: "transformation" } })}>Replace</Dropdown.Item>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <ReplaceStep type={REGEX_REPLACE_TYPE} />, type: "transformation" } })}>Regular expression</Dropdown.Item>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <SubstringStep />, type: "transformation" } })}>Substring</Dropdown.Item>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <AppendStep />, type: "transformation" } })}>Append</Dropdown.Item>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <InsertStep />, type: "transformation" } })}>Insert</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<ToUpperCaseStep />,"transformation")}>To Upper case</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<ToLowerCaseStep />,"transformation")}>To Lower case</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<ReplaceStep type={STRING_REPLACE_TYPE} />,"transformation")}>Replace</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<ReplaceStep type={REGEX_REPLACE_TYPE} />,"transformation")}>Regular expression</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<SubstringStep />,"transformation" )}>Substring</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<AppendStep />,"transformation")}>Append</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<InsertStep />,"transformation")}>Insert</Dropdown.Item>
                 </>
             },
             "json_transformation": {
                 "name": "Json transformation",
                 "color": "json_transformation_color",
                 "form": <>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <CsvToJsonLinesStep />, type: "json_transformation" } })}>Csv to Json line</Dropdown.Item>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <JsonFieldConverterStep />, type: "json_transformation" } })}>Json field converter</Dropdown.Item>
-                    <Dropdown.Item onClick={() => dispatcher({ type: "newStep", payload: { form: <JsonFieldExtractorStep />, type: "json_transformation" } })}>Json field extractor</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<CsvToJsonLinesStep />,"json_transformation")}>Csv to Json line</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<JsonFieldConverterStep />,"json_transformation")}>Json field converter</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<JsonFieldExtractorStep />,"json_transformation")}>Json field extractor</Dropdown.Item>
+                    <Dropdown.Item onClick={() => addNewStep(<JsonFieldRemoverStep />,"json_transformation")}>Json field remover</Dropdown.Item>
                 </>
             }
         }
-    }, [dispatcher])
+    }, [addNewStep])
 
     const selectedType = types[selectedTypeName]
 
@@ -73,6 +77,6 @@ export function StepActions({ dispatcher, isMaxStepsReached }) {
                 {selectedType.form}
             </Dropdown.Menu>
         </Dropdown>}
-        <Button style={{ alignSelf: "center" }} size='large' variant="contained" onClick={() => dispatcher({ type: "executeTransformation" })}>Execute</Button>
+        <Button style={{ alignSelf: "center" }} size='large' variant="contained" onClick={executeTranformation}>GO</Button>
     </div>
 }

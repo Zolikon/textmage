@@ -13,33 +13,50 @@ body {
 #inner-body {
   height: 100%;
   display: grid;
-  grid-template-areas: "header header header header header"
-    ". . . . ."
-    ". input steps output ."
-    ". . . . ."
-    "footer footer footer footer footer";
+  grid-template-areas: "header header header"
+    ". . ."
+    ". main ."
+    ". . ."
+    "footer footer footer";
   grid-template-rows: 8% 2% auto 2% 5%;
-  grid-template-columns: 2% 20% auto 20% 2%;
+  grid-template-columns: 2% auto 2%;
   gap: 10px;
+}
+
+main {
+  grid-area: main;
+  display: grid;
+  grid-template-areas: "input steps output";
+  grid-template-columns: 25% auto 25%;
 }
 
 @media screen and (max-width: 992px) {
   #inner-body {
     display: grid;
     grid-template-areas: "header"
-      "input"
-      "steps"
-      "output"
+      "main"
       "footer";
-    grid-template-rows: 100px 400px 800px 400px 50px;
+    grid-template-rows: 100px 1600px 50px;
     grid-template-columns: 100%;
     gap: 10px;
   }
 
+  main {
+    display: grid;
+    grid-template-areas: "input"
+    "steps"
+    "output";
+    grid-template-rows: 25% auto 25%;
+    grid-template-columns: 100%;
+  }
+
   .step {
-    height: 20%;
     display: flex;
     flex-wrap: wrap;
+  }
+
+  .step-container .step-holder {
+    max-height: 600px;
   }
 }
 
@@ -85,7 +102,7 @@ footer {
 }
 
 .step-container .toggle-holder {
-  height: 10%;
+  height: 50px;
 }
 
 .step-container .step-holder {
@@ -96,12 +113,12 @@ footer {
   gap: 7px;
   width: 95%;
   height: 80%;
-  overflow-y: auto;
+  overflow: auto;
 }
 
 .step-container .step-action-holder {
   width: 100%;
-  height: 10%;
+  height: 100px;
   display: flex;
   justify-content: space-between;
   gap: 5%;

@@ -6,6 +6,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { ArrowDownward } from "@mui/icons-material";
 import { Help } from "./Help";
+import { useSteps } from "./StepContext";
 
 function translateTypeToClass(type) {
     switch (type) {
@@ -20,7 +21,9 @@ function translateTypeToClass(type) {
     }
 }
 
-export default function Step({ type, dispatcher, id, children }) {
+export function Step({ type, id, children }) {
+
+    const {updateStep, moveStepUp, moveStepDown, closeStep} = useSteps()
 
     const [disabled, setDisabled] = useState(false)
     const [title, setTitle] = useState('')
@@ -32,27 +35,25 @@ export default function Step({ type, dispatcher, id, children }) {
     });
 
     useEffect(() => {
-        dispatcher({
-            type: "updateStep",
-            payload: {
+        updateStep({
                 id: id,
                 title: title,
                 help: help,
                 disabled: disabled,
                 transformer: transformer
             }
-        })
-    }, [dispatcher, id, disabled, transformer, title, help])
+        )
+    }, [id, disabled, transformer, title, help])
 
     const classNames = [translateTypeToClass(type), disabled ? "step disabled-step prevent-select" : "step prevent-select"].join(" ")
 
     return <div className={classNames}>
         <div className={disabled ? "prevent-select step-title disabled-step" : "prevent-select step-title"} style={{ width: "40%" }}>{title}</div>
         <div className="step-actions">
-            <IconButton onClick={() => dispatcher({ type: "moveStepUp", payload: id })} aria-label="moveup">
+            <IconButton onClick={() => moveStepUp(id)} aria-label="moveup">
                 <ArrowUpwardIcon />
             </IconButton>
-            <IconButton onClick={() => dispatcher({ type: "moveStepDown", payload: id })} aria-label="movedown">
+            <IconButton onClick={() => moveStepDown(id)} aria-label="movedown">
                 <ArrowDownward />
             </IconButton>
             {help && <Help>
@@ -61,7 +62,7 @@ export default function Step({ type, dispatcher, id, children }) {
             <IconButton onClick={() => setDisabled((disabledStatus) => !disabledStatus)} aria-label="disable">
                 {disabled ? <CheckIcon /> : <BlockIcon />}
             </IconButton>
-            <IconButton onClick={() => dispatcher({ type: 'closeStep', payload: id })} aria-label="delete">
+            <IconButton onClick={() => closeStep(id)} aria-label="delete">
                 <DeleteIcon />
             </IconButton>  
         </div>
