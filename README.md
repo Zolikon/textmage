@@ -4,10 +4,10 @@
 
 Text editor where you can define multiple transformation steps and the text will be process line-by-line with each steps executed.npm
 
-####v1.0.0
+#### v1.0.0
 First release
 
-####v1.1.0
+#### v1.1.0 (planned release)
 _Features:_
 
 - Configurable line-by-line processing on step level
