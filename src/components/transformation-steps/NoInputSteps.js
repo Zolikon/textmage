@@ -1,23 +1,17 @@
-import { useEffect } from "react"
-
-
-
-
+import { useEffect } from "react";
 
 export function ToUpperCaseStep({ setTransformer, setTitle }) {
+  useEffect(() => setTitle("To upper case"), [setTitle]);
 
-    useEffect(() => {
-        setTitle("To upper case")
-        setTransformer(() => (input) => input.toUpperCase())
-    }, [setTransformer, setTitle])
-
+  useEffect(() => {
+    setTransformer(() => (input) => input.toUpperCase());
+  }, [setTransformer]);
 }
 
 export function ToLowerCaseStep({ setTransformer, setTitle }) {
+  useEffect(() => setTitle("To lower case"), [setTitle]);
 
-    useEffect(() => {
-        setTitle("To lower case")
-        setTransformer(() => (input) => input.toLowerCase())
-    }, [setTransformer, setTitle])
-
+  useEffect(() => {
+    setTransformer(() => (input) => input.toLowerCase());
+  }, [setTransformer]);
 }
